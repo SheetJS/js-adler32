@@ -1,7 +1,6 @@
 {
-	"private":"true",
 	"name": "adler-32",
-	"version": "0.2.0",
+	"version": "0.1.0",
 	"author": "sheetjs",
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
