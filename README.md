@@ -51,6 +51,17 @@ decisions in the code).
 
 [js-crc](http://git.io/crc32) has more performance notes
 
+Bit twiddling is much faster than taking the mod on Safari and older Firefoxes.
+Instead of taking the literal mod 65521, it is faster to keep it in the integers
+by bit-shifting: `65536 ~ 15 mod 65521` so for nonnegative integer `a`:
+
+```
+    a = (a >>> 16) * 65536 + (a & 65535)            [equality]
+    a ~ (a >>> 16) * 15    + (a & 65535) mod 65521
+```
+
+The mod is taken at the very end, since the intermediate result may exceed 65521
+
 ## Magic Number
 
 The magic numbers were chosen so as to not overflow a 31-bit integer:

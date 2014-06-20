@@ -10,29 +10,29 @@ function adler32_bstr(bstr) {
 	if(bstr.length > 32768) if(use_buffer) return adler32_buf(Buffer(bstr));
 	var a = 1, b = 0, L = bstr.length, M;
 	for(var i = 0; i < L;) {
-		M = Math.min(L-i, 3854);
-		for(;M>0;--M) {
-			a += bstr.charCodeAt(i++);
+		M = Math.min(L-i, 3850)+i;
+		for(;i<M;i++) {
+			a += bstr.charCodeAt(i);
 			b += a;
 		}
-		a %= 65521;
-		b %= 65521;
+		a = (15*(a>>>16)+(a&65535))
+		b = (15*(b>>>16)+(b&65535))
 	}
-	return b > 32767 ? (((b - 65536) * 65536) | a) : ((b * 65536) | a);
+	return ((b%65521) << 16) | (a%65521);
 }
 
 function adler32_buf(buf) {
 	var a = 1, b = 0, L = buf.length, M;
 	for(var i = 0; i < L;) {
-		M = Math.min(L-i, 3854);
-		for(;M>0;--M) {
-			a += buf[i++];
+		M = Math.min(L-i, 3850)+i;
+		for(;i<M;i++) {
+			a += buf[i];
 			b += a;
 		}
-		a %= 65521;
-		b %= 65521;
+		a = (15*(a>>>16)+(a&65535))
+		b = (15*(b>>>16)+(b&65535))
 	}
-	return b > 32767 ? (((b - 65536) * 65536) | a) : ((b * 65536) | a);
+	return ((b%65521) << 16) | (a%65521);
 }
 
 /* much much faster to intertwine utf8 and adler */
@@ -61,7 +61,7 @@ function adler32_str(str) {
 		a %= 65521;
 		b %= 65521;
 	}
-	return b > 32767 ? (((b - 65536) * 65536) | a) : ((b * 65536) | a);
+	return (b << 16) | a;
 }
 ADLER32.bstr = adler32_bstr;
 ADLER32.buf = adler32_buf;
