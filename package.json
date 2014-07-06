@@ -21,6 +21,7 @@
 			"pattern": "adler32.js"
 		}
 	},
+  "files": ["adler32.js", "LICENSE", "README.md"],
 	"bugs": { "url": "https://github.com/SheetJS/js-adler32/issues" },
 	"license": "Apache-2.0",
 	"engines": { "node": ">=0.8" }
