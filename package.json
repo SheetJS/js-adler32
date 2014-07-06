@@ -1,6 +1,6 @@
 {
 	"name": "adler-32",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"author": "sheetjs",
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
@@ -21,7 +21,7 @@
 			"pattern": "adler32.js"
 		}
 	},
-  "files": ["adler32.js", "LICENSE", "README.md"],
+	"files": ["adler32.js", "LICENSE", "README.md"],
 	"bugs": { "url": "https://github.com/SheetJS/js-adler32/issues" },
 	"license": "Apache-2.0",
 	"engines": { "node": ">=0.8" }
