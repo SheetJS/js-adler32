@@ -79,9 +79,11 @@ Subtract up to 4 elements for the unicode case.
 Please consult the attached LICENSE file for details.  All rights not explicitly
 granted by the Apache 2.0 license are reserved by the Original Author.
 
+## Badges
+
 [![Build Status](https://travis-ci.org/SheetJS/js-adler32.svg?branch=master)](https://travis-ci.org/SheetJS/js-adler32)
 
 [![Coverage Status](https://coveralls.io/repos/SheetJS/js-adler32/badge.png?branch=master)](https://coveralls.io/r/SheetJS/js-adler32?branch=master)
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8827aa40b3fdbca7c7ad0f51c68b3379 "githalytics.com")](http://githalytics.com/SheetJS/js-adler32)
+[![Analytics](https://ga-beacon.appspot.com/UA-36810333-1/SheetJS/js-adler32?pixel)](https://github.com/SheetJS/js-adler32)
 

@@ -1,6 +1,8 @@
 /* adler32.js (C) 2014-present SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 var ADLER32;
+/*:: declare var DO_NOT_EXPORT_ADLER: any; */
+/*:: declare var define: any; */
 (function (factory) {
 	if(typeof DO_NOT_EXPORT_ADLER === 'undefined') {
 		if('object' === typeof exports) {
@@ -19,10 +21,14 @@ var ADLER32;
 	}
 }(function(ADLER32) {
 ADLER32.version = '0.3.0';
+/*::
+type ADLER32Type = number;
+type ABuf = Array<number> | Buffer;
+*/
 /* consult README.md for the magic number */
 /* charCodeAt is the best approach for binary strings */
 var use_buffer = typeof Buffer !== 'undefined';
-function adler32_bstr(bstr) {
+function adler32_bstr(bstr/*:string*/)/*:ADLER32Type*/ {
 	if(bstr.length > 32768) if(use_buffer) return adler32_buf(new Buffer(bstr));
 	var a = 1, b = 0, L = bstr.length, M;
 	for(var i = 0; i < L;) {
@@ -37,7 +43,7 @@ function adler32_bstr(bstr) {
 	return ((b%65521) << 16) | (a%65521);
 }
 
-function adler32_buf(buf) {
+function adler32_buf(buf/*:ABuf*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = buf.length, M;
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850)+i;
@@ -52,7 +58,7 @@ function adler32_buf(buf) {
 }
 
 /* much much faster to intertwine utf8 and adler */
-function adler32_str(str) {
+function adler32_str(str/*:string*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = str.length, M, c, d;
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850);
