@@ -2,7 +2,7 @@
 # make_unicode_crc.py -- generate baselines for tests
 # Copyright (C) 2016-present  SheetJS
 
-from zlib import adler32 
+from zlib import adler32
 from array import array
 from sys import argv, stderr, exit
 from importlib import import_module

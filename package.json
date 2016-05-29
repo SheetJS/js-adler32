@@ -1,14 +1,20 @@
 {
 	"name": "adler-32",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"author": "sheetjs",
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
+	"bin": {
+		"adler32": "./bin/adler32.njs"
+	},
 	"main": "./adler32",
+	"dependencies": {
+		"concat-stream":"",
+		"exit-on-epipe":""
+	},
 	"devDependencies": {
 		"mocha":"",
 		"xlsjs":"",
-		"uglify-js":"",
 		"codepage":""
 	},
 	"repository": { "type":"git", "url":"git://github.com/SheetJS/js-adler32.git" },
@@ -21,7 +27,7 @@
 			"pattern": "adler32.js"
 		}
 	},
-	"files": ["adler32.js", "LICENSE", "README.md"],
+	"files": ["adler32.js", "bin/adler32.njs", "LICENSE", "README.md"],
 	"bugs": { "url": "https://github.com/SheetJS/js-adler32/issues" },
 	"license": "Apache-2.0",
 	"engines": { "node": ">=0.8" }

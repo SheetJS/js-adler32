@@ -5,7 +5,7 @@ Emphasis on correctness and performance.
 
 ## Installation
 
-In [nodejs](https://www.npmjs.org/package/adler-32):
+With [npm](https://www.npmjs.org/package/adler-32):
 
     npm install adler-32
 
@@ -14,6 +14,9 @@ In the browser:
     <script lang="javascript" src="adler32.js"></script>
 
 The browser exposes a variable ADLER32
+
+When installed globally, npm installs a script `adler32` that computes the
+checksum for a specified file or standard input.
 
 ## Usage
 
@@ -27,9 +30,12 @@ The browser exposes a variable ADLER32
 
 ## Testing
 
-`make test` will run the nodejs-based test.  To run the in-browser tests, run a
-local server and go to the `ctest` directory.  To update the browser artifacts,
-run `make ctest`.
+`make test` will run the nodejs-based test.
+
+To run the in-browser tests, run a local server and go to the `ctest` directory.
+`make ctestserv` will start a python `SimpleHTTPServer` server on port 8000.
+
+To update the browser artifacts, run `make ctest`.
 
 To generate the bits file, use the `adler32` function from python zlib:
 
@@ -44,10 +50,25 @@ To generate the bits file, use the `adler32` function from python zlib:
 2023497376
 ```
 
+The included `adler32.njs` script can process files or stdin:
+
+```
+$ echo "this is a test" > t.txt
+$ bin/adler32.njs t.txt
+726861088
+```
+
+For comparison, the included `adler32.py` script uses python zlib:
+
+```
+$ bin/adler32.py t.txt
+726861088
+```
+
 ## Performance
 
 `make perf` will run algorithmic performance tests (which should justify certain
-decisions in the code).  
+decisions in the code).
 
 [js-crc](http://git.io/crc32) has more performance notes
 
