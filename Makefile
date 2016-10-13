@@ -2,6 +2,7 @@ LIB=adler32
 REQS=
 ADDONS=
 AUXTARGETS=demo/browser.js
+CMDS=bin/adler32.njs
 HTMLLINT=index.html
 
 ULIB=$(shell echo $(LIB) | tr a-z A-Z)
@@ -31,12 +32,13 @@ clean: clean-baseline ## Remove targets and build artifacts
 
 .PHONY: test mocha
 test mocha: test.js $(TARGET) baseline ## Run test suite
-	mocha -R spec -t 20000
+	mocha -R spec -t 30000
 
 .PHONY: ctest
 ctest: ## Build browser test (into ctest/ subdirectory)
 	cat misc/*.js > ctest/fixtures.js
 	cp -f test.js ctest/test.js
+	cp -f shim.js ctest/shim.js
 	cp -f $(TARGET) ctest/
 
 .PHONY: ctestserv
@@ -56,6 +58,7 @@ clean-baseline: ## Remove test baselines
 .PHONY: lint
 lint: $(TARGET) $(AUXTARGETS) ## Run jshint and jscs checks
 	@jshint --show-non-errors $(TARGET) $(AUXTARGETS)
+	@jshint --show-non-errors $(CMDS)
 	@jshint --show-non-errors package.json
 	@jshint --show-non-errors --extract=always $(HTMLLINT)
 	@jscs $(TARGET) $(AUXTARGETS)
@@ -68,7 +71,7 @@ flow: lint ## Run flow checker
 cov: misc/coverage.html ## Run coverage test
 
 misc/coverage.html: $(TARGET) test.js
-	mocha --require blanket -R html-cov -t 20000 > $@
+	mocha --require blanket -R html-cov -t 30000 > $@
 
 .PHONY: coveralls
 coveralls: ## Coverage Test + Send to coveralls.io

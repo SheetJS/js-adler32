@@ -15,7 +15,6 @@ function is_defined(val, keys) {
 	return keys.length === 0 || is_defined(val[keys[0]], keys.slice(1));
 }
 
-
 function make_chunk_buf_to_str(BType) {
 	return function(data) {
 		var o = "", l = 0, w = 10240, L = data.byteLength/w;
@@ -24,17 +23,14 @@ function make_chunk_buf_to_str(BType) {
 		return o;
 	};
 }
+var bstrify = make_chunk_buf_to_str(typeof Uint8Array !== 'undefined' ? Uint8Array : Array);
 
-var bstrify = make_chunk_buf_to_str(Uint8Array);
-
-
-var rABS = is_defined(FileReader, ['prototype', 'readAsBinaryString']);
+var rABS = typeof FileReader !== 'undefined' && is_defined(FileReader, ['prototype', 'readAsBinaryString']);
 var userABS = (document.getElementsByName("userabs")[0]);
 if(!rABS) {
 	userABS.disabled = true;
 	userABS.checked = false;
 }
-
 
 function process_value(val) {
 	var output = [];
@@ -49,7 +45,6 @@ function process_value(val) {
 	console_log("output", new Date());
 }
 
-
 var dotxt = (document.getElementById('dotext'));
 dotxt.onclick = function() {
 	var txt=(document.getElementById('rawdata'));
@@ -58,8 +53,6 @@ dotxt.onclick = function() {
 	process_value(wb);
 };
 
-
-
 var readcb = function(e) {
 	console_log("onload", new Date(), rABS, false);
 	var target = (e.target);
@@ -67,7 +60,6 @@ var readcb = function(e) {
 	var val = rABS ? X.bstr(data) : X.str(bstrify(data));
 	process_value(val);
 };
-
 
 var handle_file = function(e) {
 	rABS = userABS.checked;
@@ -84,7 +76,6 @@ var handle_file = function(e) {
 
 var xlf = (document.getElementById('xlf'));
 if(xlf.addEventListener) xlf.addEventListener('change', handle_file, false);
-
 
 var handle_drop = (function(e) {
 	e.stopPropagation();

@@ -9,14 +9,41 @@ if(typeof require !== 'undefined') {
 
 function readlines(f) { return fs.readFileSync(f, "ascii").split("\n"); }
 
+function msieversion()
+{
+	if(typeof window == 'undefined') return Infinity;
+	if(typeof window.navigator == 'undefined') return Infinity;
+	var ua = window.navigator.userAgent
+	var msie = ua.indexOf ( "MSIE " )
+	if(msie < 0) return Infinity;
+	return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
+}
+
 describe('adler32 bits', function() {
 	bits.forEach(function(i) {
 		var msg = i[0], l = i[0].length, L = i[1]|0;
 		if(l > 20) msg = i[0].substr(0,5) + "...(" + l + ")..." + i[0].substr(-5);
+		if(l > 100 && msieversion() < 9) return;
+		if(l > 20000 && typeof Buffer === 'undefined') return;
 		it(msg, function() {
 			if(i[2] === 1) assert.equal(X.bstr(i[0]), L);
 			assert.equal(X.str(i[0]), i[1]|0);
 			if(typeof Buffer !== 'undefined') assert.equal(X.buf(new Buffer(i[0])), L);
+			var len = i[0].length, step = len < 20000 ? 1 : len < 50000 ? Math.ceil(len / 20000) : Math.ceil(len / 2000);
+			for(var x = 0; x < len; x += step) {
+				if(i[0].charCodeAt(x) >= 0xD800 && i[0].charCodeAt(x) < 0xE000) continue;
+				if(i[2] === 1) {
+					var bstradl = X.bstr(i[0].substr(x), X.bstr(i[0].substr(0, x)));
+					assert.equal(bstradl, L);
+				}
+				var stradl = X.str(i[0].substr(x), X.str(i[0].substr(0, x)));
+				assert.equal(stradl, i[1]|0);
+				if(typeof Buffer !== 'undefined') {
+					var buf = new Buffer(i[0]);
+					var bufadl = X.buf(buf.slice(x), X.buf(buf.slice(0, x)));
+					assert.equal(bufadl, L);
+				}
+			}
 		});
 	});
 });
@@ -34,9 +61,9 @@ if(typeof require !== 'undefined') describe("unicode", function() {
 				if(c.charCodeAt(0) >= 0xD800 && c.charCodeAt(0) < 0xE000) continue;
 				var cc = corpus[ucidx], dd = X.str(c);
 				assert.equal(dd, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + dd);
-				var ee = X.buf(new Buffer(c, "utf8"));
-				assert.equal(ee, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + ee);
 				if(typeof Buffer !== 'undefined') {
+					var ee = X.buf(new Buffer(c, "utf8"));
+					assert.equal(ee, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + ee);
 					var ff = X.bstr(String.fromCharCode.apply(null, new Buffer(c, "utf8")));
 					assert.equal(ff, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + ff);
 				}

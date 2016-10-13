@@ -1,3 +1,6 @@
+var old = require('adler-32').bstr;
+var cur = require('../').bstr;
+
 function sheetjs1(bstr) {
 	var a = 1, b = 0, L = bstr.length;
 	for(var i = 0; i < L;) {
@@ -10,7 +13,7 @@ function sheetjs1(bstr) {
 }
 
 function sheetjs2(bstr) {
-	var a = 1, b = 0, L = bstr.length, M;
+	var a = 1, b = 0, L = bstr.length, M = 0;
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850)+i;
 		for(;i<M;i++) {
@@ -24,7 +27,7 @@ function sheetjs2(bstr) {
 }
 
 function sheetjs3(bstr) {
-	var a = 1, b = 0, L = bstr.length, M;
+	var a = 1, b = 0, L = bstr.length, M = 0;
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 5552);
 		for(;M>0;--M) {
@@ -37,28 +40,31 @@ function sheetjs3(bstr) {
 	return (b << 16) | a;
 }
 
+var w = 6;
 var foobar = [255,255,255,255,255,255].map(function(x) { return String.fromCharCode(x); }).join("");
-foobar += foobar;
-foobar += foobar;
-foobar += foobar;
-foobar += foobar;
-foobar += foobar;
-foobar += foobar;
+for(var ff = 0; ff < w; ++ff) foobar += foobar;
 foobar.charCodeAt(0);
 var m = 2048;
+
 var assert = require('assert');
 var BM = require('./bm');
-for(var i = 0; i != 14; ++i) {
+for(var i = 0; i != 6; ++i) foobar += foobar;
+for(var i = 6; i != 14; ++i) {
 	foobar += foobar;
 	foobar.charCodeAt(0);
-	assert.equal(sheetjs1(foobar), sheetjs3(foobar));
-	assert.equal(sheetjs1(foobar), sheetjs2(foobar));
-	//for(var j = 0; j != 200; ++j) assert.equal(sheetjs2(foobar), sheetjs3(foobar));
-	var suite = new BM('binary string (' + foobar.length + ')');
 
+	var res = old(foobar);
+	assert.equal(res, cur(foobar));
+	assert.equal(res, sheetjs1(foobar));
+	assert.equal(res, sheetjs2(foobar));
+	assert.equal(res, sheetjs3(foobar));
+
+	var suite = new BM('binary string (' + foobar.length + ')');
 	if(i<3) suite.add('sheetjs 1', function() { for(var j = 0; j != m; ++j) sheetjs1(foobar); });
 	suite.add('sheetjs 2', function() { for(var j = 0; j != m; ++j) sheetjs2(foobar); });
 	suite.add('sheetjs 3', function() { for(var j = 0; j != m; ++j) sheetjs3(foobar); });
+	suite.add('last vers', function() { for(var j = 0; j != m; ++j) old(foobar); });
+	suite.add('current v', function() { for(var j = 0; j != m; ++j) cur(foobar); });
 	suite.run();
 	m>>>=1; if(m < 10) m = 10;
 }

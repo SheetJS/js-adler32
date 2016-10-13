@@ -1,14 +1,12 @@
 /*# consult README.md for the magic number */
 /*# charCodeAt is the best approach for binary strings */
-/*global Buffer */
-var use_buffer = typeof Buffer !== 'undefined';
-function adler32_bstr(bstr/*:string*/)/*:ADLER32Type*/ {
-	if(bstr.length > 32768) if(use_buffer) return adler32_buf(new Buffer(bstr));
+function adler32_bstr(bstr/*:string*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = bstr.length, M = 0;
+	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850)+i;
 		for(;i<M;i++) {
-			a += bstr.charCodeAt(i);
+			a += bstr.charCodeAt(i)&0xFF;
 			b += a;
 		}
 		a = (15*(a>>>16)+(a&65535));
@@ -17,12 +15,13 @@ function adler32_bstr(bstr/*:string*/)/*:ADLER32Type*/ {
 	return ((b%65521) << 16) | (a%65521);
 }
 
-function adler32_buf(buf/*:ABuf*/)/*:ADLER32Type*/ {
+function adler32_buf(buf/*:ABuf*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = buf.length, M = 0;
+	if(typeof seed === 'number') { a = seed & 0xFFFF; b = (seed >>> 16) & 0xFFFF; }
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850)+i;
 		for(;i<M;i++) {
-			a += buf[i];
+			a += buf[i]&0xFF;
 			b += a;
 		}
 		a = (15*(a>>>16)+(a&65535));
@@ -32,8 +31,9 @@ function adler32_buf(buf/*:ABuf*/)/*:ADLER32Type*/ {
 }
 
 /*# much much faster to intertwine utf8 and adler */
-function adler32_str(str/*:string*/)/*:ADLER32Type*/ {
+function adler32_str(str/*:string*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = str.length, M = 0, c = 0, d = 0;
+	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }
 	for(var i = 0; i < L;) {
 		M = Math.min(L-i, 3850);
 		while(M>0) {
@@ -58,5 +58,5 @@ function adler32_str(str/*:string*/)/*:ADLER32Type*/ {
 		a = (15*(a>>>16)+(a&65535));
 		b = (15*(b>>>16)+(b&65535));
 	}
-	return (b << 16) | a;
+	return ((b%65521) << 16) | (a%65521);
 }

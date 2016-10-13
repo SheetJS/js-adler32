@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# make_unicode_crc.py -- generate baselines for tests
+# make_unicode_adler.py -- generate baselines for tests
 # Copyright (C) 2016-present  SheetJS
 
 from zlib import adler32
