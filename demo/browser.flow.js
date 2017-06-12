@@ -3,7 +3,6 @@
 /*:: declare var ADLER32: ADLER32Module; */
 var X = ADLER32;
 
-// $FlowIgnore
 function console_log(/*:: ...args:Array<any> */) { if(typeof console !== 'undefined') console.log.apply(console, [].slice.call(arguments)); }
 
 function lpad(s/*:string*/, len/*:number*/, chr/*:?string*/)/*:string*/{
