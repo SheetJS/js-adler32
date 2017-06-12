@@ -2,6 +2,7 @@
 /*global ADLER32, console */
 var X = ADLER32;
 
+// $FlowIgnore
 function console_log() { if(typeof console !== 'undefined') console.log.apply(console, [].slice.call(arguments)); }
 
 function lpad(s, len, chr){
