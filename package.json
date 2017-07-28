@@ -1,6 +1,6 @@
 {
 	"name": "adler-32",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"author": "sheetjs",
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
@@ -9,13 +9,12 @@
 	},
 	"main": "./adler32",
 	"dependencies": {
-		"concat-stream":"",
-		"printj":"",
-		"exit-on-epipe":""
+		"printj":"~1.1.0",
+		"exit-on-epipe":"~1.0.1"
 	},
 	"devDependencies": {
-		"mocha":"",
-		"codepage":""
+		"mocha":"~2.5.3",
+		"codepage":"~1.10.0"
 	},
 	"repository": { "type":"git", "url":"git://github.com/SheetJS/js-adler32.git" },
 	"scripts": {
