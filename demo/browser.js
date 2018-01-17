@@ -1,5 +1,6 @@
 /*jshint browser:true */
-/*global ADLER32, console */
+/*eslint-env browser */
+/*global ADLER32, console, Uint8Array */
 var X = ADLER32;
 
 function console_log() { if(typeof console !== 'undefined') console.log.apply(console, [].slice.call(arguments)); }

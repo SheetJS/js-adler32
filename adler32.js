@@ -4,6 +4,7 @@
 var ADLER32;
 (function (factory) {
 	/*jshint ignore:start */
+	/*eslint-disable */
 	if(typeof DO_NOT_EXPORT_ADLER === 'undefined') {
 		if('object' === typeof exports) {
 			factory(exports);
@@ -19,9 +20,10 @@ var ADLER32;
 	} else {
 		factory(ADLER32 = {});
 	}
+	/*eslint-enable */
 	/*jshint ignore:end */
 }(function(ADLER32) {
-ADLER32.version = '1.1.0';
+ADLER32.version = '1.2.0';
 function adler32_bstr(bstr, seed) {
 	var a = 1, b = 0, L = bstr.length, M = 0;
 	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }
@@ -81,7 +83,10 @@ function adler32_str(str, seed) {
 	}
 	return ((b%65521) << 16) | (a%65521);
 }
+// $FlowIgnore
 ADLER32.bstr = adler32_bstr;
+// $FlowIgnore
 ADLER32.buf = adler32_buf;
+// $FlowIgnore
 ADLER32.str = adler32_str;
 }));

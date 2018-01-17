@@ -1,32 +1,34 @@
 /* adler32.js (C) 2014-present SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 /*exported ADLER32 */
-var ADLER32;
-/*:: declare var DO_NOT_EXPORT_ADLER: any; */
-/*:: declare var define: any; */
-(function (factory) {
+/*:: declare var DO_NOT_EXPORT_ADLER:?boolean; */
+/*:: declare function define(cb:()=>any):void; */
+var ADLER32/*:ADLER32Module*/;
+(function (factory/*:(a:any)=>void*/)/*:void*/ {
 	/*jshint ignore:start */
+	/*eslint-disable */
 	if(typeof DO_NOT_EXPORT_ADLER === 'undefined') {
 		if('object' === typeof exports) {
 			factory(exports);
 		} else if ('function' === typeof define && define.amd) {
 			define(function () {
-				var module = {};
+				var module/*:ADLER32Module*/ = /*::(*/{}/*:: :any)*/;
 				factory(module);
 				return module;
 			});
 		} else {
-			factory(ADLER32 = {});
+			factory(ADLER32 = /*::(*/{}/*:: :any)*/);
 		}
 	} else {
-		factory(ADLER32 = {});
+		factory(ADLER32 = /*::(*/{}/*:: :any)*/);
 	}
+	/*eslint-enable */
 	/*jshint ignore:end */
-}(function(ADLER32) {
-ADLER32.version = '1.1.0';
+}(function(ADLER32/*:ADLER32Module*/) {
+ADLER32.version = '1.2.0';
 /*::
 type ADLER32Type = number;
-type ABuf = Array<number> | Buffer;
+type ABuf = Array<number> | Buffer | Uint8Array;
 */
 /*# consult README.md for the magic number */
 /*# charCodeAt is the best approach for binary strings */
@@ -90,7 +92,10 @@ function adler32_str(str/*:string*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	}
 	return ((b%65521) << 16) | (a%65521);
 }
+// $FlowIgnore
 ADLER32.bstr = adler32_bstr;
+// $FlowIgnore
 ADLER32.buf = adler32_buf;
+// $FlowIgnore
 ADLER32.str = adler32_str;
 }));

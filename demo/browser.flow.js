@@ -1,5 +1,6 @@
 /*jshint browser:true */
-/*global ADLER32, console */
+/*eslint-env browser */
+/*global ADLER32, console, Uint8Array */
 /*:: declare var ADLER32: ADLER32Module; */
 var X = ADLER32;
 
@@ -17,6 +18,10 @@ function is_defined(val/*:any*/, keys/*:Array<string>*/)/*:boolean*/ {
 }
 
 /*# buffer to string; IE String.fromCharCode.apply limit, manual chunk */
+/*::
+type ArrayLike = any;
+type Stringifier = {(d:ArrayLike):string};
+*/
 function make_chunk_buf_to_str(BType/*:function*/)/*:Stringifier*/ {
 	return function(data/*:any*/)/*:string*/ {
 		var o = "", l = 0, w = 10240, L = data.byteLength/w;
@@ -66,7 +71,7 @@ var readcb = function(e/*:Event*/) {
 	console_log("onload", new Date(), rABS, false);
 	var target/*:FileReader*/ = (e.target/*:any*/);
 	var data = target.result;
-	var val/*:ADLER32Type*/ = rABS ? X.bstr(data) : X.str(bstrify(data));
+	var val/*:ADLER32Type*/ = rABS ? X.bstr(/*::(*/data/*:: :any)*/) : X.str(bstrify(data));
 	process_value(val);
 };
 

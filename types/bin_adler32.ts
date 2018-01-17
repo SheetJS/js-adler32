@@ -1,13 +1,19 @@
-#!/usr/bin/env node
 /* adler32.js (C) 2014-present SheetJS -- http://sheetjs.com */
 /* eslint-env node */
 /* vim: set ts=2 ft=javascript: */
 /*jshint node:true */
+/// <reference types="../node_modules/@types/node/" />
+/* node type definition is missing writable stream _writev */
+interface Chunk { chunk: any; encoding: string; }
+type CBType = () => void;
 
-var X/*:ADLER32Module*/;
-try { X = require('../'); } catch(e) { X = require('adler-32'); }
+import X = require("adler-32");
+import 'exit-on-epipe';
+import fs = require('fs');
+import stream = require('stream');
+import { sprintf } from "printj";
 
-function help()/*:number*/ {
+const help = (): number => {
 [
 "usage: adler32 [options] [filename]",
 "",
@@ -26,25 +32,23 @@ function help()/*:number*/ {
 "Default output mode is signed (-d)",
 ""
 ].forEach(function(l) { console.log(l); });
-	return 0;
-}
+return 0;
+};
 
-function version()/*:number*/ { console.log(X.version); return 0; }
+const version = (): number => { console.log(X.version); return 0; };
 
-var fs = require('fs');
-require('exit-on-epipe');
 
-function die(msg/*:string*/, ec/*:?number*/)/*:void*/ { console.error(msg); process.exit(ec || 0); }
+const die = (msg: string, ec?: number): void => { console.error(msg); process.exit(ec || 0); };
 
-var args/*:Array<string>*/ = process.argv.slice(2);
-var filename/*:string*/ = "";
-var fmt/*:string*/ = "";
-var seed = 1, r = 10;
+const args/*:Array<string>*/ = process.argv.slice(2);
+let filename/*:string*/ = "";
+let fmt/*:string*/ = "";
+let seed = 0, r = 10;
 
-for(var i = 0; i < args.length; ++i) {
-	var arg = args[i];
-	if(arg.charCodeAt(0) != 45) { if(filename === "") filename = arg; continue; }
-	var m = arg.indexOf("=") == -1 ? arg : arg.substr(0, arg.indexOf("="));
+for(let i = 0; i < args.length; ++i) {
+	const arg = args[i];
+	if(arg.charCodeAt(0) !== 45) { if(filename === "") filename = arg; continue; }
+	const m = arg.indexOf("=") === -1 ? arg : arg.substr(0, arg.indexOf("="));
 	switch(m) {
 		case "-": filename = "-"; break;
 
@@ -56,12 +60,12 @@ for(var i = 0; i < args.length; ++i) {
 		case "--hex":      case "-x": fmt = "%0.8x"; break;
 		case "--HEX":      case "-X": fmt = "%0.8X"; break;
 		case "--format":   case "-F":
-			fmt = ((m!=arg) ? arg.substr(m.length+1) : args[++i])||""; break;
+			fmt = ((m!==arg) ? arg.substr(m.length+1) : args[++i])||""; break;
 
 		case "--hex-seed": case "-H": r = 16;
 		/* falls through */
 		case "--seed":     case "-S":
-			seed=parseInt((m!=arg) ? arg.substr(m.length+1) : args[++i], r)||1; break;
+			seed=parseInt((m!==arg) ? arg.substr(m.length+1) : args[++i], r)||0; break;
 
 		default: die("adler32: unrecognized option `" + arg + "'", 22);
 	}
@@ -70,16 +74,15 @@ for(var i = 0; i < args.length; ++i) {
 if(!process.stdin.isTTY) filename = filename || "-";
 if(filename.length===0) die("adler32: must specify a filename ('-' for stdin)",1);
 
-var adler32 = seed;
+let adler32 = seed;
 // $FlowIgnore -- Writable is callable but type sig disagrees
-var writable = require('stream').Writable();
-writable._write = function(chunk, e, cb) { adler32 = X.buf(chunk, adler32); cb(); };
-writable._writev = function(chunks, cb) {
-	chunks.forEach(function(c) { adler32 = X.buf(c.chunk, adler32);});
-	cb();
+const writable = new stream.Writable();
+writable._write = (chunk: any, e: string, cb: CBType) => { adler32 = X.buf(chunk, adler32); cb(); };
+(<any>writable)._writev = (chunks: Chunk[], cb: CBType) => {
+	chunks.forEach(function(c) { adler32 = X.buf(c.chunk, adler32);}); cb();
 };
-writable.on('finish', function() {
-	console.log(fmt === "" ? adler32 : require("printj").sprintf(fmt, adler32));
+writable.on('finish', () => {
+	console.log(fmt === "" ? adler32 : sprintf(fmt, adler32));
 });
 
 if(filename === "-") process.stdin.pipe(writable);

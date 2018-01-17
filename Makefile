@@ -57,6 +57,9 @@ clean-baseline: ## Remove test baselines
 
 ## Code Checking
 
+.PHONY: fullint
+fullint: lint old-lint tslint flow mdlint ## Run all checks
+
 .PHONY: lint
 lint: $(TARGET) $(AUXTARGETS) ## Run eslint checks
 	@eslint --ext .js,.njs,.json,.html,.htm $(TARGET) $(AUXTARGETS) $(CMDS) $(HTMLLINT) package.json bower.json
@@ -71,6 +74,11 @@ old-lint: $(TARGET) $(AUXTARGETS) ## Run jshint and jscs checks
 	@jscs $(TARGET) $(AUXTARGETS)
 	if [ -e $(CLOSURE) ]; then java -jar $(CLOSURE) $(REQS) $(FLOWTARGET) --jscomp_warning=reportUnknownTypes >/dev/null; fi
 
+.PHONY: tslint
+tslint: $(TARGET) ## Run typescript checks
+	#@npm install dtslint typescript
+	#@npm run-script dtslint
+	dtslint types
 
 .PHONY: flow
 flow: lint ## Run flow checker
@@ -85,6 +93,12 @@ misc/coverage.html: $(TARGET) test.js
 .PHONY: coveralls
 coveralls: ## Coverage Test + Send to coveralls.io
 	mocha --require blanket --reporter mocha-lcov-reporter -t 20000 | node ./node_modules/coveralls/bin/coveralls.js
+
+MDLINT=README.md
+.PHONY: mdlint
+mdlint: $(MDLINT) ## Check markdown documents
+	alex $^
+	mdspell -a -n -x -r --en-us $^
 
 .PHONY: perf
 perf: ## Run Performance Tests

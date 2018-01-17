@@ -14,7 +14,7 @@ $ npm install adler-32
 In the browser:
 
 ```html
-<script lang="javascript" src="adler32.js"></script>
+<script src="adler32.js"></script>
 ```
 
 The browser exposes a variable `ADLER32`.
@@ -22,9 +22,8 @@ The browser exposes a variable `ADLER32`.
 When installed globally, npm installs a script `adler32` that computes the
 checksum for a specified file or standard input.
 
-The script will manipulate `module.exports` if available (e.g. in a CommonJS
-`require` context).  This is not always desirable.  To prevent the behavior,
-define `DO_NOT_EXPORT_ADLER`.
+The script will manipulate `module.exports` if available .  This is not always
+desirable.  To prevent the behavior, define `DO_NOT_EXPORT_ADLER`.
 
 ## Usage
 
@@ -34,12 +33,12 @@ optional second argument representing the starting "seed" (for running hash).
 The return value is a signed 32-bit integer.
 
 - `ADLER32.buf(byte array or buffer[, seed])` assumes the argument is a sequence
-  of 8-bit unsigned integers (e.g. nodejs `Buffer` or simple array of ints).
+  of 8-bit unsigned integers (nodejs `Buffer`, `Uint8Array` or array of bytes).
 
-- `ADLER32.bstr(binary string[, seed])` assumes the argument as a binary string
+- `ADLER32.bstr(binary string[, seed])` assumes the argument is a binary string
   where byte `i` is the low byte of the UCS-2 char: `str.charCodeAt(i) & 0xFF`
 
-- `ADLER32.str(string)` assumes the argument as a standard JS string and
+- `ADLER32.str(string)` assumes the argument is a standard JS string and
   calculates the hash of the UTF-8 encoding.
 
 For example:
@@ -68,7 +67,7 @@ To run the in-browser tests, run a local server and go to the `ctest` directory.
 
 To update the browser artifacts, run `make ctest`.
 
-To generate the bits file, use the `adler32` function from python zlib:
+To generate the bits file, use the `adler32` function from python `zlib`:
 
 ```python
 >>> from zlib import adler32
@@ -81,7 +80,7 @@ To generate the bits file, use the `adler32` function from python zlib:
 2023497376
 ```
 
-The included `adler32.njs` script can process files or stdin:
+The included `adler32.njs` script can process files or standard input:
 
 ```bash
 $ echo "this is a test" > t.txt
@@ -89,7 +88,7 @@ $ bin/adler32.njs t.txt
 726861088
 ```
 
-For comparison, the included `adler32.py` script uses python zlib:
+For comparison, the included `adler32.py` script uses python `zlib`:
 
 ```bash
 $ bin/adler32.py t.txt
@@ -101,7 +100,7 @@ $ bin/adler32.py t.txt
 `make perf` will run algorithmic performance tests (which should justify certain
 decisions in the code).
 
-Bit twiddling is much faster than taking the mod on Safari and older Firefoxes.
+Bit twiddling is much faster than taking the mod in Safari and Firefox browsers.
 Instead of taking the literal mod 65521, it is faster to keep it in the integers
 by bit-shifting: `65536 ~ 15 mod 65521` so for nonnegative integer `a`:
 
@@ -122,7 +121,7 @@ F[255] (* bstr:  x \[Element] Integers && 1 <= x <= 3854 *)
 F[127] (* ascii: x \[Element] Integers && 1 <= x <= 5321 *)
 ```
 
-Subtract up to 4 elements for the unicode case.
+Subtract up to 4 elements for the Unicode case.
 
 ## License
 
