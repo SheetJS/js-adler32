@@ -1,0 +1,16 @@
+{
+  "name": "adler32-cli",
+  "version": "1.0.2",
+  "description": "Command-line interface for adler32",
+  "main": "index.js",
+  "bin": {
+    "adler32-cli": "./bin/adler32.njs"
+  },
+  "author": "Garrett Luu",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "adler32": "^0.1.7",
+    "exit-on-epipe": "^1.0.1",
+    "fs": "0.0.1-security"
+  }
+}

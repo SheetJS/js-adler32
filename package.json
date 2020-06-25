@@ -4,9 +4,6 @@
 	"author": "sheetjs",
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
-	"bin": {
-		"adler32": "./bin/adler32.njs"
-	},
 	"main": "./adler32",
 	"types": "types",
 	"dependencies": {
