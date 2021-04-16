@@ -4,7 +4,7 @@ function adler32_bstr(bstr/*:string*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = bstr.length, M = 0;
 	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }
 	for(var i = 0; i < L;) {
-		M = Math.min(L-i, 3850)+i;
+		M = Math.min(L-i, 2654)+i;
 		for(;i<M;i++) {
 			a += bstr.charCodeAt(i)&0xFF;
 			b += a;
@@ -19,7 +19,7 @@ function adler32_buf(buf/*:ABuf*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = buf.length, M = 0;
 	if(typeof seed === 'number') { a = seed & 0xFFFF; b = (seed >>> 16) & 0xFFFF; }
 	for(var i = 0; i < L;) {
-		M = Math.min(L-i, 3850)+i;
+		M = Math.min(L-i, 2654)+i;
 		for(;i<M;i++) {
 			a += buf[i]&0xFF;
 			b += a;
@@ -35,7 +35,7 @@ function adler32_str(str/*:string*/, seed/*:?ADLER32Type*/)/*:ADLER32Type*/ {
 	var a = 1, b = 0, L = str.length, M = 0, c = 0, d = 0;
 	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }
 	for(var i = 0; i < L;) {
-		M = Math.min(L-i, 3850);
+		M = Math.min(L-i, 2918);
 		while(M>0) {
 			c = str.charCodeAt(i++);
 			if(c < 0x80) { a += c; }
