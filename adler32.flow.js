@@ -10,7 +10,7 @@ var ADLER32/*:ADLER32Module*/;
 	if(typeof DO_NOT_EXPORT_ADLER === 'undefined') {
 		if('object' === typeof exports) {
 			factory(exports);
-		} else if ('function' === typeof define && define.amd) {
+		} else if ('function' === typeof define && /*::(*/define/*:: :any)*/.amd) {
 			define(function () {
 				var module/*:ADLER32Module*/ = /*::(*/{}/*:: :any)*/;
 				factory(module);
@@ -25,7 +25,7 @@ var ADLER32/*:ADLER32Module*/;
 	/*eslint-enable */
 	/*jshint ignore:end */
 }(function(ADLER32/*:ADLER32Module*/) {
-ADLER32.version = '1.2.0';
+ADLER32.version = '1.3.0';
 /*::
 type ADLER32Type = number;
 type ABuf = Array<number> | Buffer | Uint8Array;

@@ -23,7 +23,7 @@ var ADLER32;
 	/*eslint-enable */
 	/*jshint ignore:end */
 }(function(ADLER32) {
-ADLER32.version = '1.2.0';
+ADLER32.version = '1.3.0';
 function adler32_bstr(bstr, seed) {
 	var a = 1, b = 0, L = bstr.length, M = 0;
 	if(typeof seed === 'number') { a = seed & 0xFFFF; b = seed >>> 16; }

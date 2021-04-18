@@ -80,18 +80,19 @@ To generate the bits file, use the `adler32` function from python `zlib`:
 2023497376
 ```
 
-The included `adler32.njs` script can process files or standard input:
+The [`adler32-cli`](https://www.npmjs.com/package/adler32-cli) package includes
+scripts for processing files or text on standard input:
 
 ```bash
 $ echo "this is a test" > t.txt
-$ bin/adler32.njs t.txt
+$ adler32-cli t.txt
 726861088
 ```
 
-For comparison, the included `adler32.py` script uses python `zlib`:
+For comparison, the `adler32.py` script in the subdirectory uses python `zlib`:
 
 ```bash
-$ bin/adler32.py t.txt
+$ packages/adler32-cli/bin/adler32.py t.txt
 726861088
 ```
 

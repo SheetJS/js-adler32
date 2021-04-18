@@ -4,8 +4,7 @@
 /* vim: set ts=2 ft=javascript: */
 /*jshint node:true */
 
-/*:ADLER32Module*/
-var X = require('adler32');
+var X/*:ADLER32Module*/ = require('adler-32');
 
 function help()/*:number*/ {
   [

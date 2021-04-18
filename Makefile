@@ -2,7 +2,7 @@ LIB=adler32
 REQS=
 ADDONS=
 AUXTARGETS=demo/browser.js
-CMDS=bin/adler32.njs
+CMDS=
 HTMLLINT=index.html
 
 ULIB=$(shell echo $(LIB) | tr a-z A-Z)
@@ -62,7 +62,7 @@ fullint: lint old-lint tslint flow mdlint ## Run all checks
 
 .PHONY: lint
 lint: $(TARGET) $(AUXTARGETS) ## Run eslint checks
-	@eslint --ext .js,.njs,.json,.html,.htm $(TARGET) $(AUXTARGETS) $(CMDS) $(HTMLLINT) package.json bower.json
+	@eslint --ext .js,.njs,.json,.html,.htm $(TARGET) $(AUXTARGETS) $(CMDS) $(HTMLLINT) package.json
 	if [ -e $(CLOSURE) ]; then java -jar $(CLOSURE) $(REQS) $(FLOWTARGET) --jscomp_warning=reportUnknownTypes >/dev/null; fi
 
 .PHONY: old-lint

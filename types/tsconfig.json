@@ -9,6 +9,7 @@
         "paths": { "adler-32": ["."] },
         "types": [],
         "noEmit": true,
+        "strictFunctionTypes": true,
         "forceConsistentCasingInFileNames": true
     }
 }

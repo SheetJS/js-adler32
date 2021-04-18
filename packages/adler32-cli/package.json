@@ -1,6 +1,6 @@
 {
   "name": "adler32-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Command-line interface for adler32",
   "main": "index.js",
   "bin": {
@@ -9,8 +9,7 @@
   "author": "Garrett Luu",
   "license": "Apache-2.0",
   "dependencies": {
-    "adler32": "^0.1.7",
-    "exit-on-epipe": "^1.0.1",
-    "fs": "0.0.1-security"
+    "adler-32": "^1.3.0",
+    "printj": "~1.2.2"
   }
 }

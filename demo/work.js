@@ -11,7 +11,7 @@ var readler = function(f, adler, l) {
 	var d = f.slice(l, l + sz);
 	var r = new FileReader();
 	r.onload = function(e) {
-		var b = new Uint8Array(e.target.result);
+		var b = new Uint8Array((e.target/*:any*/).result);
 		var newadler = ADLER32.buf(b, adler);
 		/*::self.*/postMessage({t:"data", adler:newadler, bytes:l+sz});
 		readler(f, newadler, l + sz);

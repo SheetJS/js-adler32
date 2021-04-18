@@ -1,6 +1,6 @@
 /*jshint browser:true */
 /*eslint-env browser */
-/*global ADLER32, console, Uint8Array */
+/*global ADLER32, Uint8Array */
 /*:: declare var ADLER32: ADLER32Module; */
 var X = ADLER32;
 

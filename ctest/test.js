@@ -19,6 +19,14 @@ function msieversion()
 	return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
 }
 
+var Buffer_from = function(){};
+
+if(typeof Buffer !== 'undefined') {
+	var nbfs = !Buffer.from;
+	if(!nbfs) try { Buffer.from("foo", "utf8"); } catch(e) { nbfs = true; }
+	Buffer_from = nbfs ? function(buf, enc) { return (enc) ? new Buffer(buf, enc) : new Buffer(buf); } : Buffer.from.bind(Buffer);
+}
+
 describe('adler32 bits', function() {
 	bits.forEach(function(i) {
 		var msg = i[0], l = i[0].length, L = i[1]|0;
@@ -28,7 +36,7 @@ describe('adler32 bits', function() {
 		it(msg, function() {
 			if(i[2] === 1) assert.equal(X.bstr(i[0]), L);
 			assert.equal(X.str(i[0]), i[1]|0);
-			if(typeof Buffer !== 'undefined') assert.equal(X.buf(new Buffer(i[0])), L);
+			if(typeof Buffer !== 'undefined') assert.equal(X.buf(Buffer_from(i[0])), L);
 			var len = i[0].length, step = len < 20000 ? 1 : len < 50000 ? Math.ceil(len / 20000) : Math.ceil(len / 2000);
 			for(var x = 0; x < len; x += step) {
 				if(i[0].charCodeAt(x) >= 0xD800 && i[0].charCodeAt(x) < 0xE000) continue;
@@ -39,7 +47,7 @@ describe('adler32 bits', function() {
 				var stradl = X.str(i[0].substr(x), X.str(i[0].substr(0, x)));
 				assert.equal(stradl, i[1]|0);
 				if(typeof Buffer !== 'undefined') {
-					var buf = new Buffer(i[0]);
+					var buf = Buffer_from(i[0]);
 					var bufadl = X.buf(buf.slice(x), X.buf(buf.slice(0, x)));
 					assert.equal(bufadl, L);
 				}
@@ -62,9 +70,9 @@ if(typeof require !== 'undefined') describe("unicode", function() {
 				var cc = corpus[ucidx], dd = X.str(c);
 				assert.equal(dd, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + dd);
 				if(typeof Buffer !== 'undefined') {
-					var ee = X.buf(new Buffer(c, "utf8"));
+					var ee = X.buf(Buffer_from(c, "utf8"));
 					assert.equal(ee, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + ee);
-					var ff = X.bstr(String.fromCharCode.apply(null, new Buffer(c, "utf8")));
+					var ff = X.bstr(String.fromCharCode.apply(null, Buffer_from(c, "utf8")));
 					assert.equal(ff, cc, ":" + ucidx + ":" + c + ":" + cc + ":" + ff);
 				}
 			};
