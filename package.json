@@ -5,7 +5,7 @@
 	"description": "Pure-JS ADLER-32",
 	"keywords": [ "adler32", "checksum" ],
 	"main": "./adler32",
-	"types": "types",
+	"types": "types/index.d.ts",
 	"dependencies": {
 		"printj": "~1.2.2"
 	},
