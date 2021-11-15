@@ -6,9 +6,6 @@
 	"keywords": [ "adler32", "checksum" ],
 	"main": "./adler32",
 	"types": "types",
-	"dependencies": {
-		"printj": "~1.2.2"
-	},
 	"devDependencies": {
 		"mocha": "~2.5.3",
 		"blanket": "~1.2.3",
