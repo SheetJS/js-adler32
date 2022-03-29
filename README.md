@@ -133,7 +133,7 @@ granted by the Apache 2.0 license are reserved by the Original Author.
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/adler32.svg)](https://saucelabs.com/u/adler32)
 
-[![Build Status](https://travis-ci.org/SheetJS/js-adler32.svg?branch=master)](https://travis-ci.org/SheetJS/js-adler32)
+[![Build Status](https://img.shields.io/github/workflow/status/sheetjs/js-adler32/Tests:%20node.js)](https://github.com/SheetJS/js-adler32/actions)
 
 [![Coverage Status](http://img.shields.io/coveralls/SheetJS/js-adler32/master.svg)](https://coveralls.io/r/SheetJS/js-adler32?branch=master)
 
