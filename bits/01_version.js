@@ -1,1 +1,1 @@
-ADLER32.version = '1.3.0';
+ADLER32.version = '1.3.1';

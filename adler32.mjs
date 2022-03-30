@@ -25,7 +25,7 @@ var ADLER32/*:ADLER32Module*/;
 	/*eslint-enable */
 	/*jshint ignore:end */
 }(function(ADLER32/*:ADLER32Module*/) {
-ADLER32.version = '1.3.1';
+ADLER32.version = '1.3.0';
 /*::
 type ADLER32Type = number;
 type ABuf = Array<number> | Buffer | Uint8Array;
